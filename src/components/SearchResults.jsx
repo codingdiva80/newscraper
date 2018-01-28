@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
 
 class SearchResults extends Component {
 	constructor(props) {
@@ -25,8 +24,8 @@ class SearchResults extends Component {
 
 		let resultHtml = "";  		
 
-		axios.get(query).then((res) => {
-			let data = res.data.response.docs;
+		fetch(query).then(d => d.json()).then( d => {
+			let data = d.response.docs;
 			data = data.slice(0,5);
 			this.setState({ searchResults: data});
 		});	
