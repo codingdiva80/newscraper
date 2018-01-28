@@ -3,6 +3,10 @@ import React, { Component } from "react";
 class SearchResults extends Component {
 	constructor(props) {
 		super(props);
+		this.newscraperAPI = (document.domain === "localhost") ?
+			"http://localhost:3001" :
+			"http://newscraperapi.codingdiva.com";
+			
 		this.state = {
 			searchResults: []
 		}
@@ -46,19 +50,14 @@ class SearchResults extends Component {
 			date: this.formatDate(data.pub_date),
 			url: data.web_url
 		};
-		let localData = localStorage.getItem("articles");
+		fetch(this.newscraperAPI+"/save", {
+			method: "post",
+			headers: { 'Content-Type': 'application/json; charset=utf-8' },
+			body: JSON.stringify(article)
+		}).then(res => {
+			console.log(res);
+		});
 
-		try {
-			localData = JSON.parse(localData);
-		}
-		catch(e){
-			localData = {};
-		}
-		objectList.push(article);
-		objectList.push(localData);
-
-		localStorage.setItem("articles", JSON.stringify(objectList));
-		console.log(localStorage.getItem("articles").toString());
 	}
 
 	render() {
