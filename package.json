@@ -15,5 +15,6 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "axios": "^0.17.1"
   }
 }
