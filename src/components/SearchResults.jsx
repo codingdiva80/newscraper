@@ -55,6 +55,7 @@ class SearchResults extends Component {
 			headers: { 'Content-Type': 'application/json; charset=utf-8' },
 			body: JSON.stringify(article)
 		}).then(res => {
+			console.log("Data added...");
 			console.log(res);
 		});
 
