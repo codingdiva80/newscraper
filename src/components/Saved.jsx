@@ -19,13 +19,25 @@ class Saved extends Component {
 
 
     componentDidMount() {
-        fetch(this.newscraperAPI+"/savedarticles").then(data => {
-            console.log(data);
+        fetch(this.newscraperAPI+"/savedarticles")
+        .then(d => d.json())
+        .then(data => {
+            const savedArticles = data;
+            console.log(savedArticles);
+            this.setState({
+                savedArticles
+            });
         });
-        const savedArticles = [];
-        this.setState({
-            savedArticles
-        });
+    }
+    deleteArticle = (id, i) => {
+        fetch(this.newscraperAPI+"/deletearticle/" + id)
+        .then( ()=>{
+            let articles = this.state.savedArticles;
+            articles.shift(i-1);
+            this.setState({
+                savedArticles: articles
+            });
+        })
     }
 
     render() {
@@ -36,7 +48,9 @@ class Saved extends Component {
                         <div className="col-xs-12 col-sm-7 col-md-7 col-lg-7 saved-article-content">
                             <div className="snippet">
                                 { this.state.savedArticles.map((article, i) => { 
-                                    return <div key={i}>{article.title}</div>
+                                    return <div key={i}>{article.title}
+                                                <button onClick={()=>this.deleteArticle(article._id, i)}>Delete</button>
+                                            </div>
                                     }) 
                                 }
                                     <button type="button" className="main-button back-button" 
