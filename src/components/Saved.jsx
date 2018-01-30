@@ -1,8 +1,13 @@
 import React, { Component } from "react";
 
 class Saved extends Component {
+
     constructor(props) {
         super(props);
+        this.newscraperAPI = (document.domain === "localhost") ?
+			"http://localhost:3001" :
+            "http://newscraperapi.codingdiva.com";
+            
         this.state = {
             savedArticles: []
         }
@@ -14,7 +19,10 @@ class Saved extends Component {
 
 
     componentDidMount() {
-        const savedArticles = JSON.parse(localStorage.getItem("articles"));
+        fetch(this.newscraperAPI+"/savedarticles").then(data => {
+            console.log(data);
+        });
+        const savedArticles = [];
         this.setState({
             savedArticles
         });
