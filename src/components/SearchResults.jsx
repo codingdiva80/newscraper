@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 
-class SearchResults extends Component {
+export default class SearchResults extends Component {
 	constructor(props) {
 		super(props);
+		this.divElement = null;
+		this.currentButton = null;
 		this.newscraperAPI = (document.domain === "localhost") ?
 			"http://localhost:3001" :
 			"http://newscraperapi.codingdiva.com";
@@ -30,8 +32,10 @@ class SearchResults extends Component {
 
 		fetch(query).then(d => d.json()).then( d => {
 			let data = d.response.docs;
-			data = data.slice(0,5);
-			this.setState({ searchResults: data});
+			data = data.slice(0,10);
+			this.setState({ searchResults: data}, ()=>{
+				this.divElement.scrollIntoView()
+			});
 		});	
 	}
 
@@ -42,8 +46,9 @@ class SearchResults extends Component {
 		const day = dateObject.getDate();
 		return `${month}/${day}/${year}`;
 	}
-	saveArticle = (data) => {
-
+	saveArticle = (data, event) => {
+		this.currentButton = event.target;
+		this.currentButton.disabled = true;
 		let objectList = [];
 		const article = {
 			title: data.snippet,
@@ -55,35 +60,28 @@ class SearchResults extends Component {
 			headers: { 'Content-Type': 'application/json; charset=utf-8' },
 			body: JSON.stringify(article)
 		}).then(res => {
-			console.log("Data added...");
-			console.log(res);
+			this.currentButton.textContent = "Saved";
 		});
 
 	}
 
 	render() {
 		return(
-			<section className="search-result-section">
-                <div className="container">
-                    <div className="row center-xs center-sm center-md center-lg middle-xs middle-sm middle-md middle-lg">
-                        <div className="col-xs-12 col-sm-7 col-md-7 col-lg-7 search-result-content">
-                            <div className="search-term-div">Search Term: <span className="hero-text">{this.props.searchTerm}</span></div>
-                            <div className="snippet">
-                            	{ this.state.searchResults.map((item, index)=>{
-                            		return ( <div key={index}> {this.formatDate(item.pub_date)}: {item.snippet} 
-                            			<a href={item.web_url} target="_blank" className="link"> More </a>
-                            			<button className="save-button" onClick={()=>this.saveArticle(item)}>Save</button></div> );
-                            	}) }
-                            		<button type="button" className="main-button back-button" 
-                            		onClick={()=>this.updateSearchArea("Search")}>Back to Search</button>
-                            		<button type="button" className="main-button go-to-saved-button" onClick={()=>this.updateSearchArea("Saved")}>Saved Articles</button>
-                        	</div>
-                        </div>
-                    </div>
-                </div> 
+			<section className="search-result-section" ref={(el) => this.divElement = el}>
+				<div className="search-result-content">
+					<div className="search-term-div">Search Term: <span className="hero-text">{this.props.searchTerm}</span></div>
+					<div className="snippet">
+						{ this.state.searchResults.map((item, index)=>{
+							return ( <div key={index}> {this.formatDate(item.pub_date)}: {item.snippet} 
+								<a href={item.web_url} target="_blank" className="link"> More</a><span className="divider-slash"> / </span>
+								<a className="save-href" onClick={(e)=>this.saveArticle(item, e)}>Save</a></div> );
+						}) }
+							<div className="search-result-button-div"><button type="button" className="main-button back-button" 
+							onClick={()=>this.updateSearchArea("Search")}>Back to Search</button>
+							<button type="button" className="main-button go-to-saved-button" onClick={()=>this.updateSearchArea("Saved")}>Saved Articles</button></div>
+					</div>
+				</div>
             </section>
 		)
 	}
 }
-
-export default SearchResults;

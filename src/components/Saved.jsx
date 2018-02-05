@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class Saved extends Component {
+export default class Saved extends Component {
 
     constructor(props) {
         super(props);
@@ -44,28 +44,24 @@ class Saved extends Component {
         return (
             <section className="saved-articles-section">
                 <div className="container">
-                    <div className="row center-xs center-sm center-md center-lg middle-xs middle-sm middle-md middle-lg">
-                        <div className="col-xs-12 col-sm-7 col-md-7 col-lg-7 saved-article-content">
-                            <div className="snippet">
-                                { this.state.savedArticles.map((article, i) => { 
-                                    return <div key={i}>{article.title}
-                                                <button onClick={()=>this.deleteArticle(article._id, i)}>Delete</button>
-                                            </div>
-                                    }) 
-                                }
-                                    <button type="button" className="main-button back-button" 
-                                    onClick={()=>this.updateSavedArea("Search")}>Back to Search</button>
-                            </div>
+                    <div className=" saved-article-content">
+                        <div className="saved-article-title"><span>Saved Articles</span></div>                
+                        <div className="snippet">
+                            { this.state.savedArticles.map((article, i) => { 
+                                return <div key={i}>{article.title}
+                                            <a className="link" onClick={()=>this.deleteArticle(article._id, i)}> Delete</a>
+                                        </div>
+                                }) 
+                            }
+                                <div className="saved-section-button-div"><button type="button" className="main-button back-button" 
+                                onClick={()=>this.updateSavedArea("Search")}>Back to Search</button></div>
                         </div>
                     </div>
-                </div> 
+                </div>
             </section>   
         );
     }
 }
-
-export default Saved;
-
 
 
 

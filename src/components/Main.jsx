@@ -4,7 +4,7 @@ import SearchResults from "./SearchResults";
 import Saved from "./Saved";
 
 
-class Main extends Component {
+export default class Main extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -37,17 +37,22 @@ class Main extends Component {
         this.setState({display: displayState});
     }
 
+    getSearchScreen = () => {
+        return(
+            <Search 
+            updateParent={this.updateDisplayArea} 
+            captureChildTerm={this.captureTerm}
+            captureStartYear={this.captureStartYear}
+            captureEndYear={this.captureEndYear}
+            />
+        )
+    }
+
     getScreen = () => {
-        if(this.state.display === "Search") {
-            return(
-                <Search 
-                updateParent={this.updateDisplayArea} 
-                captureChildTerm={this.captureTerm}
-                captureStartYear={this.captureStartYear}
-                captureEndYear={this.captureEndYear}
-                />
-            );
-        } else if(this.state.display === "Saved") {
+        if(this.state.display === "Search"){
+            return;
+        }
+        if(this.state.display === "Saved") {
             return(
                 <Saved 
                 updateParent={this.updateDisplayArea} 
@@ -66,15 +71,17 @@ class Main extends Component {
     }
     render() {
         return (
-            <section id="showcase">
-            {this.getScreen()}; 
-            </section>
+            <div>
+                <section id="showcase">
+                    {this.getSearchScreen()}
+                </section>
+                <section id="search-saved-section">
+                    {this.getScreen()}; 
+                </section>
+            </div>
         );
     }
 }
-
-export default Main;
-
 
 
 

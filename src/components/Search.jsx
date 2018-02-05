@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Saved from "./Saved";
 
-class Search extends Component {
+export default class Search extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -41,24 +41,18 @@ class Search extends Component {
     render() {
         return (
             <section className="search-section">
-                <div className="container">
-                    <div className="row center-xs center-sm center-md center-lg middle-xs middle-sm middle-md middle-lg">
-                        <div className="col-xs-12 col-sm-6 col-md-6 col-lg-6 search-content">
-                            <form action="" method="">
-                                <label>New York Times React App</label>
-                                <input type="search" placeholder="Term" onKeyUp={this.termHandler} /><br />
-                                <input type="search" placeholder="Start Year" onKeyUp={this.startYearHandler} /><br />               
-                                <input type="search" placeholder="End Year" onKeyUp={this.endYearHandler}/>
-                                <br />
-                                <button type="button" className="main-button" onClick={this.updateSearchArea}>Search</button>
-                                <button type="button" className="main-button" onClick={this.displaySaved}>Saved</button>
-                            </form>
-                        </div>
+                <form id="submit-form" action="" method="">
+                    <label>Search Articles</label>
+                    <input type="search" placeholder="Term" onKeyUp={this.termHandler} /><br />
+                    <input type="search" placeholder="Start Year" onKeyUp={this.startYearHandler} /><br />               
+                    <input type="search" placeholder="End Year" onKeyUp={this.endYearHandler}/>
+                    <br />
+                    <div id="button-section">
+                       <button type="button" className="main-button search-button" onClick={this.updateSearchArea}>Search</button>
+                        <button type="button" className="main-button saved-button" onClick={this.displaySaved}>Saved</button>
                     </div>
-                </div> 
+                </form>
             </section>
         );
     }
 }
-
-export default Search;
